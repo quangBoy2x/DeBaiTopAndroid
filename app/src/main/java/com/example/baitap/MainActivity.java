@@ -5,19 +5,20 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -59,22 +60,44 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
+        AdapterView.AdapterContextMenuInfo
+                info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        //lấy vị trí note hiện tại
+        final Contact selectedContact = (Contact) this.lvContact.getItemAtPosition(info.position);
         switch (item.getItemId()) {
-            case R.id.menu_add:
-                //todo chuyển sang màn hình add contact
-                Toast.makeText(this, "add contact", Toast.LENGTH_SHORT).show();
-                return true;
             case R.id.menu_edit:
                 //todo chuyển sang màn hình sửa
-                Toast.makeText(this, "edit contact", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, EditActivity.class);
+                //name trong putExtra là tên của lớp đối tượng
+                intent.putExtra("contact", selectedContact);
+
+                // Start AddEditNoteActivity, (with feedback).
+                this.startActivityForResult(intent,MY_REQUEST_CODE);
                 return true;
+
             case R.id.menu_sort:
                 //sắp xếp lại list theo tên tăn dần
                 Collections.sort(contacts);
                 adapter.notifyDataSetChanged();
-            default:
-                return super.onContextItemSelected(item);
+                return true;
+            case R.id.menu_delete:
+//                Toast.makeText(this, "delete contact", Toast.LENGTH_SHORT).show();
+                new AlertDialog.Builder(this).setTitle("Xóa dữ liệu").setMessage("bạn có muốn xóa?")
+                        .setPositiveButton("có", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dataBase.delete(selectedContact);
+                                contacts.remove(selectedContact);
+                                adapter.notifyDataSetChanged();
+                            }
+                        })
+                        .setNegativeButton("không", null)
+                        .show();
+                return true;
+
         }
+        return true;
+
     }
 
     private void Map(){

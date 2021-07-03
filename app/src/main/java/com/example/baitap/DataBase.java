@@ -93,9 +93,9 @@ public class DataBase extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void delete(int id) {
+    public void delete(Contact contact) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_NAME, KEY_ID + " = ?", new String[] { String.valueOf(id) });
+        db.delete(TABLE_NAME, KEY_ID + " = ?", new String[] { String.valueOf(contact.getId()) });
         db.close();
     }
 

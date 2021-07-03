@@ -9,11 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.PropertyPermission;
-
 public class AddAcitvity extends AppCompatActivity {
 
-    Button btnBack, btnEdit;
+    Button btnBack, btnAdd;
     EditText edtId, edtName, edtNum;
     DataBase dataBase = new DataBase(this);
     private boolean needRefresh;
@@ -29,7 +27,7 @@ public class AddAcitvity extends AppCompatActivity {
         });
 
         //xử lí khi bấm edit có thể là thêm , sửa
-        btnEdit.setOnClickListener(v -> {
+        btnAdd.setOnClickListener(v -> {
             //validate đã
             //1. nếu các edt rỗng
             if(edtId.getText().toString().equals("") || edtNum.getText().toString().equals("") ||
@@ -63,7 +61,7 @@ public class AddAcitvity extends AppCompatActivity {
 
     private void Map(){
         btnBack = (Button) findViewById(R.id.btnBack);
-        btnEdit = (Button) findViewById(R.id.btnEdit);
+        btnAdd = (Button) findViewById(R.id.btnAdd);
         edtName = (EditText) findViewById(R.id.edtName);
         edtId = (EditText) findViewById(R.id.edtID);
         edtNum = (EditText) findViewById(R.id.edtNum);

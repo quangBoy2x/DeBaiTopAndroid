@@ -1,6 +1,8 @@
 package com.example.baitap;
 
-public class Contact implements Comparable<Contact>{
+import java.io.Serializable;
+
+public class Contact implements Comparable<Contact>, Serializable {
     int id;
     String name;
 
